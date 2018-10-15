@@ -27,8 +27,20 @@ public class Main extends JFrame {
     }
 
     private void initPanel() {
-        panel = new JPanel();
-        panel.setPreferredSize(new Dimension(COLS * IMAGE_SIZE, ROWS * IMAGE_SIZE));
+        panel = new JPanel(){
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(getImage("bomb"), 0, 0, this);
+            }
+        };
+        panel.setPreferredSize(new Dimension(COLS * IMAGE_SIZE, ROWS * IMAGE_SIZE ));
         add(panel);
+    }
+
+    private Image getImage(String name){
+        String filename = "img/" + name.toLowerCase() + ".png";
+        ImageIcon icon = new ImageIcon(getClass().getResource(filename));
+        return icon.getImage();
     }
 }
