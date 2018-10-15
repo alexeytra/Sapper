@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import Sapper.Box;
 
 public class Main extends JFrame {
 
@@ -13,6 +14,7 @@ public class Main extends JFrame {
     }
 
     private Main() {
+        setImage();
         initPanel();
         initFrame();
     }
@@ -31,7 +33,8 @@ public class Main extends JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(getImage("bomb"), 0, 0, this);
+                for (Box box: Box.values())
+                    g.drawImage((Image)box.image, box.ordinal() * IMAGE_SIZE, 0, this);
             }
         };
         panel.setPreferredSize(new Dimension(COLS * IMAGE_SIZE, ROWS * IMAGE_SIZE ));
@@ -42,5 +45,10 @@ public class Main extends JFrame {
         String filename = "img/" + name.toLowerCase() + ".png";
         ImageIcon icon = new ImageIcon(getClass().getResource(filename));
         return icon.getImage();
+    }
+
+    private void setImage(){
+        for (Box box: Box.values())
+            box.image = getImage(box.name());
     }
 }
