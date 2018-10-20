@@ -1,5 +1,7 @@
 package Sapper;
 
+import org.w3c.dom.ranges.Range;
+
 public class Bomb {
     private Matrix bombMap;
     private int totalBombs;
@@ -10,7 +12,9 @@ public class Bomb {
 
     void start() {
         bombMap = new Matrix(Box.ZERO);
-        placeBomb();
+        for (int i = 0; i < totalBombs; i++) {
+            placeBomb();
+        }
     }
 
     Box get (Coord coord){
@@ -18,6 +22,9 @@ public class Bomb {
     }
 
     private void placeBomb() {
-        bombMap.setMatrix(new Coord(4, 4),Box.BOMB);
+        Coord coord = Ranges.getRandomCoord();
+        bombMap.setMatrix(coord,Box.BOMB);
+        for (Coord around: Ranges.getCoordsAround(coord))
+            bombMap.setMatrix(around, Box.NUM1);
     }
 }
