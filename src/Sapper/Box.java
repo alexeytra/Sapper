@@ -18,4 +18,8 @@ public enum Box {
     NOBOMB;
 
     public Object image;
+
+    Box getNextNumberBomb(){
+        return Box.values()[this.ordinal() + 1];
+    }
 }
