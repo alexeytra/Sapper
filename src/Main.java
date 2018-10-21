@@ -17,6 +17,7 @@ public class Main extends JFrame {
     private final int ROWS = 9;
     private final int IMAGE_SIZE = 50;
     private final int BOMBS = 10;
+    private JLabel label;
 
 
     public static void main(String[] args) {
@@ -27,6 +28,7 @@ public class Main extends JFrame {
         game = new Game(COLS, ROWS, BOMBS);
         game.start();
         Ranges.setSize(new Coord(COLS, ROWS));
+        initLabel();
         setImage();
         initPanel();
         initFrame();
@@ -35,11 +37,13 @@ public class Main extends JFrame {
     private void initFrame() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sapper");
+        pack();
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
+
         setIconImage(getImage("icon"));
-        pack();
+
     }
 
     private void initPanel() {
@@ -63,13 +67,30 @@ public class Main extends JFrame {
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     game.pressLeftButton(coord);
                 }
+                if (e.getButton() == MouseEvent.BUTTON3){
+                    game.pressRightButton(coord);
+                }
+                if (e.getButton() == MouseEvent.BUTTON2){
+                    game.start();
+                }
 
+
+                label.setText(getMessage());
                 panel.repaint();
             }
         });
 
         panel.setPreferredSize(new Dimension(Ranges.getSize().x * IMAGE_SIZE, Ranges.getSize().y * IMAGE_SIZE ));
         add(panel);
+    }
+
+    private String getMessage() {
+        switch (game.getState()){
+            case PLAYED: return "Think twice!";
+            case BOMBED: return "YoU LOSE HEHEH!!!";
+            case WINNER: return "Congratulations!";
+            default: return "We";
+        }
     }
 
     private Image getImage(String name){
@@ -81,5 +102,10 @@ public class Main extends JFrame {
     private void setImage(){
         for (Box box: Box.values())
             box.image = getImage(box.name());
+    }
+
+    private void initLabel(){
+        label = new JLabel("Welcome");
+        add(label, BorderLayout.SOUTH);
     }
 }

@@ -1,9 +1,12 @@
 package Sapper;
 
+import org.ietf.jgss.GSSManager;
+
 public class Game {
 
     private Bomb bomb;
     private Flag flag;
+    private GameState state;
 
     public Game(int cols, int rows, int bombs){
         Ranges.setSize(new Coord(cols, rows));
@@ -21,9 +24,18 @@ public class Game {
     public void start() {
         bomb.start();
         flag.start();
+        state = GameState.PLAYED;
     }
 
     public void pressLeftButton(Coord coord) {
         flag.setOpenedToBox(coord);
+    }
+
+    public void pressRightButton(Coord coord) {
+        flag.toggleFlagedToBox(coord);
+    }
+
+    public GameState getState() {
+        return state;
     }
 }
