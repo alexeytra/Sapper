@@ -29,13 +29,21 @@ public class Game {
     }
 
     public void pressLeftButton(Coord coord) {
+        if (gameOver()) return;
         openBox(coord);
         checkWinner();
     }
 
+    private boolean gameOver() {
+        if(state == GameState.PLAYED)
+            return false;
+        start();
+        return true;
+    }
+
     private void openBox(Coord coord) {
         switch (flag.get(coord)){
-            case OPENED: return;
+            case OPENED: setOpenedToCloseBoxesAroundNumber(coord); return;
             case FLAGED: return;
             case CLOSED:
                 switch (bomb.get(coord)){
@@ -44,6 +52,15 @@ public class Game {
                         default: flag.setOpenedToBox(coord);return;
                 }
         }
+    }
+
+    void setOpenedToCloseBoxesAroundNumber(Coord coord){
+        if (bomb.get(coord) != Box.BOMB)
+            if (flag.getCountOfFlagedBoxesAround(coord) == bomb.get(coord).getNumber())
+                for (Coord around: Ranges.getCoordsAround(coord))
+                    if (flag.get(around) == Box.CLOSED)
+                        openBox(around);
+
     }
 
     private void openBombs(Coord coord) {

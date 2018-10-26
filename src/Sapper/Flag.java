@@ -50,4 +50,14 @@ class Flag {
         if (flagmap.getMatrix(coord1) == Box.FLAGED)
             flagmap.setMatrix(coord1, Box.NOBOMB);
     }
+
+
+    public int getCountOfFlagedBoxesAround(Coord coord) {
+        int count = 0;
+        for (Coord coord1: Ranges.getCoordsAround(coord))
+            if (flagmap.getMatrix(coord1) == Box.FLAGED)
+                count++;
+
+        return count;
+    }
 }
